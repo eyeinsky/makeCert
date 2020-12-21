@@ -1,0 +1,16 @@
+[ req ]
+prompt                  = no
+default_bits            = 2048
+distinguished_name      = req_distinguished_name
+attributes              = req_attributes
+
+[ req_distinguished_name ]
+countryName             = EE
+stateOrProvinceName     = Province
+localityName=		My Town
+organizationName=	Some Organisation
+organizationalUnitName=	Some Department
+commonName=		www.example.com
+emailAddress=		bofh@example.com
+
+[ req_attributes ]
