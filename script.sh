@@ -42,10 +42,25 @@ p12_connect() {
     curl --verbose --cert-type P12 --cert "$p12:$pw" "$host"
 }
 
+info() {
+    openssl x509 -in "$1" -text -noout
+}
+
 is_self_signed() {
-    let cert="$1"
+    local cert="$1"
     openssl verify -no-CAfile -no-CApath "$cert"
 }
 
-DEFAULT='echo No command specified'
-${@:-$DEFAULT}
+mk() {
+    cd "$(dirname "$0")"
+    make "$1"
+}
+
+help() {
+    grep -E '^ *[a-zA-Z0-9_]+\( *\) *{' "$0"
+}
+
+DEFAULT=help
+CMD="${@:-$DEFAULT}"
+echo cmd: $CMD
+$CMD
