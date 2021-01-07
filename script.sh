@@ -31,8 +31,7 @@ p12_view_cert() {
     local p12="$1"
     local pw="$2"
     local tmp_cert="$(mktemp)"
-    p12_extract_cert "$p12" "$pw" > "$tmp_cert"
-    openssl x509 -in "$tmp_cert" -text
+    p12_extract_cert "$p12" "$pw" | openssl x509 -text
 }
 
 $@
