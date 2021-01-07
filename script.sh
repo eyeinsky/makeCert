@@ -34,4 +34,18 @@ p12_view_cert() {
     p12_extract_cert "$p12" "$pw" | openssl x509 -text
 }
 
-$@
+
+p12_connect() {
+    local p12="$1"
+    local pw="$2"
+    local host="$3"
+    curl --verbose --cert-type P12 --cert "$p12:$pw" "$host"
+}
+
+is_self_signed() {
+    let cert="$1"
+    openssl verify -no-CAfile -no-CApath "$cert"
+}
+
+DEFAULT='echo No command specified'
+${@:-$DEFAULT}
