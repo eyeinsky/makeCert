@@ -7,6 +7,9 @@ key.pem:
 csr.pem: key.pem
 	openssl req -config openssl.cnf -new -key key.pem -out csr.pem
 
+
+# CA
+
 ca.key.pem:
 	${MAKE} key.pem
 	mv key.pem ca.key.pem
@@ -17,6 +20,7 @@ ca.crt.pem: ca.key.pem
 	# openssl x509 -req -days 365 -in ca.csr.pem -signkey ca.key.pem -out ca.crt.pem
 	openssl ca -selfsign -in ca.csr.pem -out ca.crt.pem -config openssl.cnf # -extensions root_ca_ext
 	rm ca.csr.pem
+
 
 # Certificates
 
@@ -40,6 +44,11 @@ client.p12: crt.pem ca.crt.pem
 	# must exist: key.pem ca.key.pem
 	cat ca.crt.pem crt.pem > chain.pem
 	openssl pkcs12 -export -inkey key.pem -in chain.pem -out client.p12
+
+.PHONY: self-sign
+self-sign: key.pem
+	echo jee
+
 
 # Clean
 
