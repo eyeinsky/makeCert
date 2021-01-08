@@ -34,6 +34,31 @@ p12_view_cert() {
     p12_extract_cert "$p12" "$pw" | openssl x509 -text
 }
 
+cert_matches_private_key() {
+    local cert="$1"
+    local key="$2"
+    local res="$(diff \
+        <(openssl x509 -noout -modulus -in "$cert") \
+        <(openssl rsa -noout -modulus -in "$key"))"
+    if [[ "$res" = "" ]]; then
+        echo "OK"
+        exit 0
+    else
+        echo "FAIL"
+        exit 1
+    fi
+}
+
+# Verify that $1 was used to sign $2
+cert_signed_cert() {
+    local signer_cert="$1"
+    local signed_cert="$2"
+    openssl verify -no-CAfile -no-CApath -partial_chain \
+            -trusted "$signer_cert" \
+            "$signed_cert"
+}
+
+# Curl client cert
 
 p12_connect() {
     local p12="$1"
