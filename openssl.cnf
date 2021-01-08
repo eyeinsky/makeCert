@@ -14,3 +14,8 @@ commonName=		www.example.com
 emailAddress=		bofh@example.com
 
 [ req_attributes ]
+
+[ ca ]
+default_ca = blabla
+
+[ blabla ]

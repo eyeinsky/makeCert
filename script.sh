@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
+# Helpers
+
 just_pem() {
     cat | sed -ne '/-----BEGIN /,/-----END /p'
 }
+
+
+# PKCS #12
 
 p12_extract_cert() {
     local p12="$1"
@@ -15,6 +20,8 @@ p12_extract_key() {
     local password="$2"
     openssl pkcs12 -info -in $p12 -nodes -nocerts -password "pass:$password" 2>/dev/null | just_pem
 }
+
+# PKCS #1
 
 key_extract_pub() {
     local key="$1"
@@ -58,17 +65,31 @@ cert_signed_cert() {
             "$signed_cert"
 }
 
-# Curl client cert
 
-p12_connect() {
+# Test a server
+
+connect_with_client_p12() {
     local p12="$1"
     local pw="$2"
     local host="$3"
     curl --verbose --cert-type P12 --cert "$p12:$pw" "$host"
 }
 
-info() {
-    openssl x509 -in "$1" -text -noout
+server_chain() {
+    local host="$1"
+    openssl s_client -connect "$host" -showcerts \
+            2>/dev/null </dev/null \
+            | sed -n '/-----BEGIN/,/-----END/p'
+}
+
+# Info/non machine-readable output
+
+crt_info() {
+    openssl x509 -text -noout -in "$1"
+}
+
+csr_info() {
+    openssl req -text -noout -in "$1"
 }
 
 is_self_signed() {
@@ -76,10 +97,14 @@ is_self_signed() {
     openssl verify -no-CAfile -no-CApath "$cert"
 }
 
+# Call make
+
 mk() {
     cd "$(dirname "$0")"
     make "$1"
 }
+
+# Meta
 
 help() {
     grep -E '^ *[a-zA-Z0-9_]+\( *\) *{' "$0"
