@@ -1,0 +1,13 @@
+[ req ]
+prompt                  = no
+default_bits            = 2048
+distinguished_name      = req_distinguished_name
+
+[ req_distinguished_name ]
+commonName                = Some Common Name
+# countryName             = EE
+# stateOrProvinceName     = Province
+# localityName            = My Town
+# organizationName        = Some Organisation
+# organizationalUnitName  = Some Department
+# emailAddress            = email@example.com

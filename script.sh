@@ -107,7 +107,7 @@ mk() {
 # Meta
 
 help() {
-    grep -E '^ *[a-zA-Z0-9_]+\( *\) *{' "$0"
+    grep -E '^ *[a-zA-Z0-9_]+\( *\) *\{' "$0"
 }
 
 DEFAULT=help

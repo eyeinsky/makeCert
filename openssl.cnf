@@ -7,11 +7,11 @@ attributes              = req_attributes
 [ req_distinguished_name ]
 countryName             = EE
 stateOrProvinceName     = Province
-localityName=		My Town
-organizationName=	Some Organisation
-organizationalUnitName=	Some Department
-commonName=		www.example.com
-emailAddress=		bofh@example.com
+localityName            = My Town
+organizationName        = Some Organisation
+organizationalUnitName  = Some Department
+commonName              = www.example.com
+emailAddress            = bofh@example.com
 
 [ req_attributes ]
 
